@@ -1,0 +1,87 @@
+from pprint import pprint
+import requests
+import os
+
+class VK:
+    def __init__(self, access_token, user_id, version ='5.131'):
+        self.token = access_token
+        self.id = user_id
+        self.version = version
+        self.params = {'access_token': self.token, 'v': self.version}
+        
+    def photos_get(self):
+        url = 'https://api.vk.com/method/photos.get'
+        params = {'user_id': self.id, 'album_id': 'profile', 'extended': 1, 'photo_sizes': 1, 'count': 5}
+        response = requests.get(url, params={**self.params, **params})
+        return response.json()
+
+# pprint(vk.photos_get())
+
+ROAD = os.getcwd()
+DIR_NAME = 'photo'
+
+def server_photo():
+    json_photo = vk.photos_get()
+    for json_photo_list in json_photo['response']['items']:
+        # pprint(json_photo_list)
+        likes = json_photo_list['likes']
+        for json_photo_dict in json_photo_list['sizes']:
+            # pprint(json_photo_dict)
+            if json_photo_dict['type'] == 'z':
+                namefile = likes['count']
+                FILE_NAME = f'likes_{namefile}.jpg'
+                full_path = os.path.join(ROAD, DIR_NAME, FILE_NAME)
+                img = requests.get(f"{json_photo_dict['url']}")
+                with open(full_path, 'bw') as img_file:
+                    img_file.write(img.content)
+
+
+        # print(type(json_photo_one))
+    return
+
+class Yandex:
+    def __init__(self, yandex_token):
+        self.url_api = 'https://cloud-api.yandex.net/v1/disk/'
+        self.headers = {'Authorization': f'OAuth {yandex_token}', 'Content-Type': 'application/json', 'Accept': 'application/json'}
+
+    def disk(self):
+        url = self.url_api
+        response = requests.get(url, headers = self.headers)
+        return response.json()
+
+    def get_linc_upload(self, file_path):
+        url = f'{self.url_api}resources/upload'
+        params = {'path': file_path, 'overwrite': 'true'}
+        response = requests.get(url, params = params, headers = self.headers)
+        return response.json()
+
+    def put_upload(self, href, filename):
+        # link_dir = ya.get_linc_upload()
+        # url = link_dir['href']
+        self.href = href
+        response = requests.put(self.href, data = open(filename, 'rb'))
+
+
+# pprint(ya.put_upload())
+
+def upload_photo():
+    full_path = os.path.join(ROAD, DIR_NAME)
+    for filename in os.listdir(full_path):
+        if filename.endswith(".jpg"): 
+            # print(os.path.join(full_path, filename))
+            link_dir = ya.get_linc_upload(f'/{filename}')
+            # pprint(ya.get_linc_upload(f'netology/{filename}'))
+            href = link_dir['href']
+            ya.put_upload(href, os.path.join(full_path, filename))
+            continue
+        else:
+            continue
+
+if __name__ == '__main__':
+    access_token = ''
+    user_id = ''
+    vk = VK(access_token, user_id)
+    yandex_token = ''
+    ya = Yandex(yandex_token)
+    server_photo()
+    upload_photo()

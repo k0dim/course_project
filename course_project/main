@@ -18,6 +18,7 @@ class VK:
 # pprint(vk.photos_get())
 
 ROAD = os.getcwd()
+CP = 'course_project'
 DIR_NAME = 'photo'
 
 def server_photo():
@@ -30,7 +31,7 @@ def server_photo():
             if json_photo_dict['type'] == 'z':
                 namefile = likes['count']
                 FILE_NAME = f'likes_{namefile}.jpg'
-                full_path = os.path.join(ROAD, DIR_NAME, FILE_NAME)
+                full_path = os.path.join(ROAD, CP, DIR_NAME, FILE_NAME)
                 img = requests.get(f"{json_photo_dict['url']}")
                 with open(full_path, 'bw') as img_file:
                     img_file.write(img.content)
@@ -65,7 +66,7 @@ class Yandex:
 # pprint(ya.put_upload())
 
 def upload_photo():
-    full_path = os.path.join(ROAD, DIR_NAME)
+    full_path = os.path.join(ROAD, CP, DIR_NAME)
     for filename in os.listdir(full_path):
         if filename.endswith(".jpg"): 
             # print(os.path.join(full_path, filename))
@@ -76,6 +77,7 @@ def upload_photo():
             continue
         else:
             continue
+
 
 if __name__ == '__main__':
     access_token = ''

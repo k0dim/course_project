@@ -46,9 +46,9 @@ def upload_photo(): # Функция, которая загружает файл
 
 def user_token_():
     token = {}
-    token['access_token'] = 'vk1.a.AQESOww6q6owUGK3yymgrKFAFp09opAf_-bxcTKvEZxNHCpb2qWsloOGkJt09DBtFvRM2BD0Zght0Cuzhr5uvpYYHuJ10BElQPFGPaTQxmKzB98H13VSnEdc0rD4j81MDiFTODxZ2My1Kb7YoZmAyhAIN5Oe7AD9ull1LHUEFCZcpEwSWktRYwjEs6QebVAE' #input('Укажите токен авторизации API VK: ')
-    token['user_id'] = '265164484' #input('Укажите ID пользователя: ')
-    token['yandex_token'] = 'AQAAAAATf-PhAADLW50Lxq76NkyFhElSEL_l-oo' #input('Укажите токен авторизации API Яндекс: ')
+    token['access_token'] = input('Укажите токен авторизации API VK: ')
+    token['user_id'] = input('Укажите ID пользователя: ')
+    token['yandex_token'] = input('Укажите токен авторизации API Яндекс: ')
     logger.info(f"Создан словарь с авторизацонными данными")
     return token
 
